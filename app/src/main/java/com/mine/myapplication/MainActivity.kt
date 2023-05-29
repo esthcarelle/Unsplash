@@ -1,8 +1,14 @@
 package com.mine.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -103,7 +109,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}) {
         Scaffold(topBar = {
-            MyTopAppBar()
+            MyTopAppBar(onBackClick = onBackClick)
         }, content = {
             Card(
                 modifier = Modifier
@@ -134,10 +140,22 @@ class MainActivity : ComponentActivity() {
             },
             actions = {
                 IconButton(onClick = { }) {
-                    Icon(Icons.Filled.Edit, null)
+                    Icon(Icons.Default.Edit, null)
                 }
             })
+    }
 
+    fun Bitmap.applyGaussianBlur(context: Context, radius: Float): Bitmap {
+        val rs = RenderScript.create(context)
+        val input = Allocation.createFromBitmap(rs, this)
+        val output = Allocation.createTyped(rs, input.type)
+        val script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs))
+        script.setInput(input)
+        script.setRadius(radius)
+        script.forEach(output)
+        output.copyTo(this)
+        rs.destroy()
+        return this
     }
 
     @Preview(showBackground = true)
