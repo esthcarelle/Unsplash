@@ -3,7 +3,9 @@ package com.mine.myapplication
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.renderscript.Allocation
 import android.renderscript.Element
@@ -11,6 +13,7 @@ import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -22,7 +25,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -108,8 +115,11 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}) {
+        val clickCount = remember { mutableStateOf(0f) }
+
+
         Scaffold(topBar = {
-            MyTopAppBar(onBackClick = onBackClick)
+            MyTopAppBar(onBackClick = onBackClick, onEditClick = { clickCount.value = it})
         }, content = {
             Card(
                 modifier = Modifier
@@ -117,21 +127,69 @@ class MainActivity : ComponentActivity() {
                     .padding(8.dp),
                 shape = RoundedCornerShape(10.dp)
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(url)
-                        .build(),
-                    modifier = Modifier,
-                    contentDescription = "",
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-        })
+//                AsyncImage(
+//                    model = ImageRequest.Builder(LocalContext.current)
+//                        .data(url)
+//                        .build(),
+//                    modifier = Modifier.blur(radius = 50.dp),
+//                    contentDescription = "",
+//                    contentScale = ContentScale.FillBounds
+//                )
+                clickCount.value
+                val bitmap = BitmapFactory
+                    .decodeResource(LocalContext.current.resources, R.drawable.custom_image)
 
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    LegacyBlurImage(bitmap, clickCount.value)
+                } else {
+                    BlurImage(
+                        bitmap,
+                        Modifier
+                            .fillMaxSize()
+                            .blur(radiusX = clickCount.value.dp, radiusY = clickCount.value.dp)
+                    )
+                }
+            }
+
+
+        })
     }
 
     @Composable
-    fun MyTopAppBar(onBackClick: () -> Unit = {}) {
+    private fun LegacyBlurImage(
+        bitmap: Bitmap,
+        blurRadio: Float = 25f,
+        modifier: Modifier = Modifier.fillMaxSize()
+    ) {
+
+        val renderScript = RenderScript.create(LocalContext.current)
+        val bitmapAlloc = Allocation.createFromBitmap(renderScript, bitmap)
+        ScriptIntrinsicBlur.create(renderScript, bitmapAlloc.element).apply {
+            setRadius(blurRadio)
+            setInput(bitmapAlloc)
+            forEach(bitmapAlloc)
+        }
+        bitmapAlloc.copyTo(bitmap)
+        renderScript.destroy()
+
+        BlurImage(bitmap, modifier)
+    }
+
+    @Composable
+    fun BlurImage(
+        bitmap: Bitmap,
+        modifier: Modifier = Modifier.fillMaxSize(),
+    ) {
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+        )
+    }
+
+    @Composable
+    fun MyTopAppBar(onBackClick: () -> Unit = {}, onEditClick: (Float) -> Unit) {
         TopAppBar(title = { Text(text = "Details") },
             navigationIcon = {
                 IconButton(onClick = { onBackClick }) {
@@ -139,7 +197,7 @@ class MainActivity : ComponentActivity() {
                 }
             },
             actions = {
-                IconButton(onClick = { }) {
+                IconButton(onClick = { onEditClick.invoke(30f) }) {
                     Icon(Icons.Default.Edit, null)
                 }
             })
