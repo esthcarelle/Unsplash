@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 fun MyTopAppBar(
     onBackClick: () -> Unit = {},
     onEditClick: (Float) -> Unit,
+    onSaveClick: () -> Unit = {},
     isBlurred: Boolean = false
 ) {
     TopAppBar(title = { Text(text = "Details") },
@@ -30,6 +32,11 @@ fun MyTopAppBar(
                 )
             }) {
                 Icon(Icons.Default.Edit, null)
+            }
+            IconButton(onClick = {
+                onSaveClick.invoke()
+            }) {
+                Icon(Icons.Default.Done, null)
             }
         })
 }

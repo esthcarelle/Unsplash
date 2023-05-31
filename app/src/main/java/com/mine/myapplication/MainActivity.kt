@@ -31,11 +31,10 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun HomeScreen(){
         val navController = rememberNavController()
-        Scaffold(bottomBar = { BottomNavigationGraph(navController = navController) }) {
+        Scaffold(bottomBar = { BottomNavigationBar(navController = navController) }) {
             BottomNavigationGraph(navController = navController)
         }
     }
-
 
     @Preview(showBackground = true)
     @Composable

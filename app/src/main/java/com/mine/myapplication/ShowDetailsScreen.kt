@@ -45,7 +45,7 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}) {
         MyTopAppBar(onBackClick = onBackClick, onEditClick = {
             clickCount.value = it
             isBlurred.value = !isBlurred.value
-        }, isBlurred.value)
+        },isBlurred = isBlurred.value)
     }, content = {
         Card(
             modifier = Modifier

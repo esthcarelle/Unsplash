@@ -20,6 +20,7 @@ import coil.request.ImageRequest
 @Composable
 fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit) {
     val vm = PhotoViewModel()
+
     LazyVerticalGrid(modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(2)) {
         items(vm.imagesList) { photo ->
             Card(
