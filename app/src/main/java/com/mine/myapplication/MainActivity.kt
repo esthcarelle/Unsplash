@@ -41,9 +41,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         UnsplashTheme {
-            GetImagesScreen(vm = PhotoViewModel()) {
 
-            }
         }
     }
 }

@@ -18,7 +18,7 @@ fun PhotosNavGraph() {
         /* creating route "home" */
         composable(route = "random") {
             /* Using composable function */
-            GetImagesScreen(PhotoViewModel(), onNavigateToDetailsScreen = { url ->
+            GetImagesScreen(onNavigateToDetailsScreen = { url ->
                 navController.currentBackStackEntry?.arguments?.putString("url", url)
                 navController.navigate(
                     "details?url=${
