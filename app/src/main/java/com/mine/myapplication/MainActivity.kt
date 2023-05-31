@@ -1,6 +1,7 @@
 package com.mine.myapplication
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -12,6 +13,7 @@ import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -40,6 +42,7 @@ import androidx.navigation.compose.*
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
+import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.ar.core.Config
@@ -58,12 +61,19 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+
                     NavGraph()
                 }
             }
         }
     }
+    @Composable
+    fun HomeScreen(){
+        Scaffold(bottomBar = ) {
 
+        }
+    }
+    @
     @Composable
     fun NavGraph() {
         val navController = rememberNavController()
@@ -120,24 +130,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    suspend fun loadBitmapFromUrl(url: String, context:Context) : Bitmap{
-
-        val imageLoader: ImageLoader = ImageLoader(context = context)
-        val request: ImageRequest = ImageRequest.Builder(context = context).data(url).build()
-        val result = (imageLoader.execute(request = request) as SuccessResult).drawable
-
-        return (result as BitmapDrawable).bitmap
-
-    }
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}) {
-        val clickCount = remember { mutableStateOf(0.5f) }
+        val clickCount = remember { mutableStateOf(0.1f) }
         val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
         val context = LocalContext.current
+        val isBlurred = remember { mutableStateOf(false) }
 
         Scaffold(topBar = {
-            MyTopAppBar(onBackClick = onBackClick, onEditClick = { clickCount.value = it })
+            MyTopAppBar(onBackClick = onBackClick, onEditClick = {
+                clickCount.value = it
+                isBlurred.value = !isBlurred.value
+            }, isBlurred.value)
         }, content = {
             Card(
                 modifier = Modifier
@@ -145,22 +150,29 @@ class MainActivity : ComponentActivity() {
                     .padding(8.dp),
                 shape = RoundedCornerShape(10.dp)
             ) {
+                val request = ImageRequest.Builder(LocalContext.current)
+                    .data(url)
+                    .build()
+
+                if(!isBlurred.value)
                 AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(url)
-                        .build(),
+                    model = request,
                     modifier = Modifier.blur(radius = 50.dp),
                     contentDescription = "",
                     contentScale = ContentScale.FillBounds
                 )
-                LaunchedEffect(url){
-                    bitmapState.value = loadBitmapFromUrl(url, context)
+
+                LaunchedEffect(isBlurred.value) {
+                    withContext(Dispatchers.IO) {
+                        val drawable =
+                            uriToBitmap(context, url)
+                        bitmapState.value = drawable
+                    }
                 }
 
-//                val bitmap = BitmapFactory
-//                    .decodeResource(LocalContext.current.resources, R.drawable.custom_image)
-
+                if(isBlurred.value)
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    Log.e(TAG, "ShowImageDetails: " + clickCount.value)
                     bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
                 } else {
                     bitmapState.value?.let { it1 ->
@@ -178,6 +190,24 @@ class MainActivity : ComponentActivity() {
         })
     }
 
+    private suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
+
+        val loader = ImageLoader(context)
+        val request = ImageRequest.Builder(context)
+            .data(uri)
+            .allowHardware(false) // Disable hardware bitmaps.
+            .build()
+
+        val result = (loader.execute(request) as SuccessResult).drawable
+        val bitmap = (result as BitmapDrawable).bitmap
+
+        val resizedBitmap = Bitmap.createScaledBitmap(
+            bitmap, 100, 100, true
+        );
+
+        return resizedBitmap
+    }
+
     @Composable
     private fun LegacyBlurImage(
         bitmap: Bitmap,
@@ -186,7 +216,8 @@ class MainActivity : ComponentActivity() {
     ) {
 
         val renderScript = RenderScript.create(LocalContext.current)
-        val bitmapAlloc = Allocation.createFromBitmap(renderScript, bitmap.convertToSoftwareBitmap())
+        val bitmapAlloc =
+            Allocation.createFromBitmap(renderScript, bitmap)
         ScriptIntrinsicBlur.create(renderScript, bitmapAlloc.element).apply {
             setRadius(blurRadio)
             setInput(bitmapAlloc)
@@ -197,12 +228,13 @@ class MainActivity : ComponentActivity() {
 
         BlurImage(bitmap, modifier)
     }
+
     fun Bitmap.convertToSoftwareBitmap(): Bitmap {
-        if (config == Bitmap.Config.ARGB_8888) {
-            return this
-        }
-        return copy(Bitmap.Config.ARGB_8888, true)
+        val softwareBitmap = this.copy(Bitmap.Config.ARGB_8888, false)
+        this.recycle()
+        return softwareBitmap
     }
+
     @Composable
     fun BlurImage(
         bitmap: Bitmap,
@@ -217,7 +249,11 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun MyTopAppBar(onBackClick: () -> Unit = {}, onEditClick: (Float) -> Unit) {
+    fun MyTopAppBar(
+        onBackClick: () -> Unit = {},
+        onEditClick: (Float) -> Unit,
+        isBlurred: Boolean = false
+    ) {
         TopAppBar(title = { Text(text = "Details") },
             navigationIcon = {
                 IconButton(onClick = { onBackClick }) {
@@ -225,23 +261,16 @@ class MainActivity : ComponentActivity() {
                 }
             },
             actions = {
-                IconButton(onClick = { onEditClick.invoke(30f) }) {
+                IconButton(onClick = {
+                    if (isBlurred)
+                        onEditClick.invoke(0.1f)
+                    else onEditClick.invoke(
+                        0.1f
+                    )
+                }) {
                     Icon(Icons.Default.Edit, null)
                 }
             })
-    }
-
-    fun Bitmap.applyGaussianBlur(context: Context, radius: Float): Bitmap {
-        val rs = RenderScript.create(context)
-        val input = Allocation.createFromBitmap(rs, this)
-        val output = Allocation.createTyped(rs, input.type)
-        val script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs))
-        script.setInput(input)
-        script.setRadius(radius)
-        script.forEach(output)
-        output.copyTo(this)
-        rs.destroy()
-        return this
     }
 
     @Preview(showBackground = true)
