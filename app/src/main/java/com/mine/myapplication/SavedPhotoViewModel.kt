@@ -18,4 +18,7 @@ class SavedPhotoViewModel(application: Application) : AndroidViewModel(applicati
 
         images = repository.images
     }
+    fun saveImage(photoEntity: PhotoEntity){
+        repository.insertImage(photoEntity)
+    }
 }

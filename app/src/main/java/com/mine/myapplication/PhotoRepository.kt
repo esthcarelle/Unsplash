@@ -1,5 +1,7 @@
 package com.mine.myapplication
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +14,8 @@ class PhotoRepository(private val photoDao: PhotoDao) {
 
     fun insertImage(image: PhotoEntity) {
         coroutineScope.launch(Dispatchers.IO) {
-            photoDao.insertImage(image)
+           val res = photoDao.insertImage(image)
+            Log.e(TAG, "insertImage: "+res )
         }
     }
 }

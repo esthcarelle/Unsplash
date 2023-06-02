@@ -2,6 +2,7 @@ package com.mine.myapplication
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -35,7 +36,7 @@ import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}) {
+fun ShowImageDetails(url: String, onBackClick: () -> Unit = {},viewModel: SavedPhotoViewModel) {
     val clickCount = remember { mutableStateOf(0.1f) }
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
     val context = LocalContext.current
@@ -45,7 +46,12 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}) {
         MyTopAppBar(onBackClick = onBackClick, onEditClick = {
             clickCount.value = it
             isBlurred.value = !isBlurred.value
-        },isBlurred = isBlurred.value)
+        },isBlurred = isBlurred.value, onSaveClick = {
+            val photoEntity = PhotoEntity(url = url)
+            viewModel.saveImage(photoEntity)
+            Log.e(TAG, "ShowImageDetails: "+photoEntity )
+        }
+        )
     }, content = {
         Card(
             modifier = Modifier
