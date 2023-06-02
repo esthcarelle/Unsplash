@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface PhotoDao {
     @Insert
-    fun insertImage(photoEntity: PhotoEntity)
+    fun insertImage(photoEntity: PhotoEntity): Long
 
     @Query("SELECT * FROM images")
     fun getAllSavedImages(): LiveData<List<PhotoEntity>>

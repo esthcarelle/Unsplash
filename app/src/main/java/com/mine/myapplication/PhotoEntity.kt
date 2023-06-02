@@ -1,14 +1,12 @@
 package com.mine.myapplication
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "images")
 class PhotoEntity {
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "imageId")
     var id:Int = 0
 
