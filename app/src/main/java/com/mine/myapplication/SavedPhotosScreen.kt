@@ -25,8 +25,7 @@ import coil.request.ImageRequest
 @Composable
 fun SavedPhotosScreen(viewModel: SavedPhotoViewModel,onNavigateToDetailsScreen: (String) -> Unit) {
     val images by viewModel.images.observeAsState(listOf())
-    Log.e(TAG, "SavedPhotosScreen: "+ images)
-
+    
     LazyVerticalGrid(modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(2)) {
             items(images) { photo ->
                 Card(

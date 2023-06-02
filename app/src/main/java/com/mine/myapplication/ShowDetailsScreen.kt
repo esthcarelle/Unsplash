@@ -49,7 +49,6 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {},viewModel: SavedP
         },isBlurred = isBlurred.value, onSaveClick = {
             val photoEntity = PhotoEntity(url = url)
             viewModel.saveImage(photoEntity)
-            Log.e(TAG, "ShowImageDetails: "+photoEntity )
         }
         )
     }, content = {
