@@ -1,7 +1,9 @@
 package com.mine.myapplication
 
+import android.app.Application
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,7 +35,11 @@ fun PhotosNavGraph() {
         ) {
             /* Using composable function */
             it.arguments?.getString("url")
-                ?.let { url -> ShowImageDetails(url) }
+                ?.let { url -> ShowImageDetails(url = url,viewModel = (
+                        SavedPhotoViewModel(
+                            LocalContext.current.applicationContext
+                                    as Application
+                        ))) }
         }
     }
 }
