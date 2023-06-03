@@ -43,3 +43,31 @@ fun PhotosNavGraph() {
         }
     }
 }
+@Composable
+fun SavedPhotoNavGraph(){
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "saved"
+    ) {
+        /* creating route "home" */
+        composable(route = "saved") {
+            /* Using composable function */
+            SavedPhotosScreen(viewModel = (
+                    SavedPhotoViewModel(
+                        LocalContext.current.applicationContext
+                                as Application
+                    )
+                    ), onNavigateToDetailsScreen = {}
+            )
+        }
+        composable(
+            route = "details?url={url}",
+            arguments = listOf(navArgument("url") { type = NavType.StringType })
+        ) {
+            /* Using composable function */
+            it.arguments?.getString("url")
+                ?.let { url -> SavedPhotoDetails("") }
+        }
+    }
+}
