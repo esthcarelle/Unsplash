@@ -1,8 +1,10 @@
-package com.mine.myapplication
+package com.mine.myapplication.repository
 
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.mine.myapplication.dao.PhotoDao
+import com.mine.myapplication.model.PhotoEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,9 +1,12 @@
-package com.mine.myapplication
+package com.mine.myapplication.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.mine.myapplication.ImageRoomDatabase
+import com.mine.myapplication.model.PhotoEntity
+import com.mine.myapplication.repository.PhotoRepository
 
 class SavedPhotoViewModel(application: Application) : AndroidViewModel(application) {
 

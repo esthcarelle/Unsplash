@@ -2,7 +2,6 @@ package com.mine.myapplication
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -31,6 +30,8 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.mine.myapplication.model.PhotoEntity
+import com.mine.myapplication.viewModel.SavedPhotoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

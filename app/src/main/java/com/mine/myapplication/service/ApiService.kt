@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.service
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.mine.myapplication.viewModel.PhotoViewModel
 
 @Composable
 fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit) {

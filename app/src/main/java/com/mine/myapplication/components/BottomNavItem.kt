@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

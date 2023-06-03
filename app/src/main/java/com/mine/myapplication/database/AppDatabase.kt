@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.mine.myapplication.dao.PhotoDao
+import com.mine.myapplication.model.PhotoEntity
 
 @Database(entities = [(PhotoEntity::class)], version = 2)
 abstract class ImageRoomDatabase: RoomDatabase() {
