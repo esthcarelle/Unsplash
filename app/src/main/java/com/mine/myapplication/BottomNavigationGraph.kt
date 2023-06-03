@@ -17,13 +17,7 @@ fun BottomNavigationGraph(navController: NavHostController) {
             PhotosNavGraph()
         }
         composable(BottomNavItem.Saved.screen_route) {
-            SavedPhotosScreen(viewModel = (
-                SavedPhotoViewModel(
-                    LocalContext.current.applicationContext
-                            as Application
-                )
-            ), onNavigateToDetailsScreen = {}
-            )
+            SavedPhotoNavGraph()
         }
     }
 }
