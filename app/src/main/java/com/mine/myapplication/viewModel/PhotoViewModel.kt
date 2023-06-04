@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mine.myapplication.ResponseItem
+import com.mine.myapplication.service.APIService
 import kotlinx.coroutines.launch
 
 class PhotoViewModel : ViewModel() {
