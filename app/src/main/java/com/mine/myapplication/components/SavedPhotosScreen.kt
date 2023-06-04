@@ -31,7 +31,7 @@ fun SavedPhotosScreen(viewModel: SavedPhotoViewModel, onNavigateToDetailsScreen:
                     modifier = Modifier
                         .height(170.dp)
                         .clickable {
-                            photo.let { }
+                            photo.let { onNavigateToDetailsScreen.invoke(it.url)}
                         }
                         .padding(8.dp),
                     shape = RoundedCornerShape(10.dp)
