@@ -1,9 +1,11 @@
-package com.mine.myapplication
+package com.mine.myapplication.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mine.myapplication.PhotosNavGraph
+import com.mine.myapplication.SavedPhotoNavGraph
 import com.mine.myapplication.components.BottomNavItem
 
 @Composable

@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import com.mine.myapplication.components.SavedPhotoDetails
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 
 @Composable
@@ -36,16 +37,21 @@ fun PhotosNavGraph() {
         ) {
             /* Using composable function */
             it.arguments?.getString("url")
-                ?.let { url -> ShowImageDetails(url = url,viewModel = (
-                        SavedPhotoViewModel(
-                            LocalContext.current.applicationContext
-                                    as Application
-                        ))) }
+                ?.let { url ->
+                    ShowImageDetails(
+                        url = url, viewModel = (
+                                SavedPhotoViewModel(
+                                    LocalContext.current.applicationContext
+                                            as Application
+                                ))
+                    )
+                }
         }
     }
 }
+
 @Composable
-fun SavedPhotoNavGraph(){
+fun SavedPhotoNavGraph() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -59,7 +65,14 @@ fun SavedPhotoNavGraph(){
                         LocalContext.current.applicationContext
                                 as Application
                     )
-                    ), onNavigateToDetailsScreen = {}
+                    ), onNavigateToDetailsScreen = { url ->
+                navController.currentBackStackEntry?.arguments?.putString("url", url)
+                navController.navigate(
+                    "details?url=${
+                        Uri.encode(url)
+                    }"
+                )
+            }
             )
         }
         composable(
@@ -68,7 +81,7 @@ fun SavedPhotoNavGraph(){
         ) {
             /* Using composable function */
             it.arguments?.getString("url")
-                ?.let { url -> SavedPhotoDetails("") }
+                ?.let { url -> SavedPhotoDetails(url) }
         }
     }
 }
