@@ -21,7 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SavedPhotoDetails(url: String) {
+fun SavedPhotoDetails(url: String,imageState: String) {
     val currentSelection = remember { mutableStateOf("Original") }
     val isBlurred = remember {
         mutableStateOf(false)
@@ -32,26 +32,25 @@ fun SavedPhotoDetails(url: String) {
             .align(Alignment.CenterHorizontally)
             .padding(16.dp),
             currentSelection = currentSelection.value,
-            toggleStates = listOf("Original", "Blurred"),
+            toggleStates = listOf("Image"),
             onToggleChange = {
                 currentSelection.value = it
                 isBlurred.value = currentSelection.value != "Original"
             }
         )
-        ImageDetail(url = url, isBlurred = isBlurred.value)
+        ImageDetail(url = url, isBlurred = isBlurred.value, imageState = imageState)
     }
 }
 
 @Composable
-fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: String) {
+fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: String,imageState: String = "Original") {
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
     val context = LocalContext.current
     val clickCount = remember { mutableStateOf(0.1f) }
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
+        modifier = Modifier
+            .fillMaxSize()
             .padding(8.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -59,34 +58,35 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: 
             .data(url)
             .build()
 
-        if (!isBlurred)
+        if (imageState == "Original")
             AsyncImage(
                 model = request,
-                modifier = modifier.blur(radius = 50.dp),
+                modifier = Modifier,
                 contentDescription = "",
                 contentScale = ContentScale.FillBounds
             )
-
-        LaunchedEffect(isBlurred) {
-            withContext(Dispatchers.IO) {
-                val drawable =
-                    uriToBitmap(context, url)
-                bitmapState.value = drawable
+        else if (imageState == "Blurred") {
+            LaunchedEffect(imageState) {
+                withContext(Dispatchers.IO) {
+                    val drawable =
+                        uriToBitmap(context, url)
+                    bitmapState.value = drawable
+                }
             }
-        }
-
-        if (isBlurred)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
             } else {
                 bitmapState.value?.let { it1 ->
                     BlurImage(
                         it1,
-                        modifier
+                        Modifier
                             .fillMaxSize()
                             .blur(radiusX = clickCount.value.dp, radiusY = clickCount.value.dp)
                     )
                 }
             }
+        } else if (imageState == "Zoom") {
+            ZoomableComposable(url = url, offSetX = 0f, offSetY = 0f, scale = 1f)
+        }
     }
 }

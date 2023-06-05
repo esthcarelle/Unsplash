@@ -97,7 +97,7 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: Saved
                     }
                 }
             } else if (imageState.value == "Zoom") {
-                ZoomableComposable(url = url)
+                ZoomableComposable(url = url, offSetX = 0f, offSetY = 0f, scale = 1f)
             }
         }
 

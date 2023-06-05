@@ -48,7 +48,7 @@ fun SliderView(state: PagerState, url:String, viewModel: SavedPhotoViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(contentAlignment = Alignment.BottomCenter) {
-                SavedPhotoDetails(url = imageUrl.value)
+                SavedPhotoDetails(url = imageUrl.value,imageUrls[page].imageState)
             }
         }
     }
