@@ -101,7 +101,7 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {},viewModel: SavedP
 
     })
 }
- suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
+suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
 
     val loader = ImageLoader(context)
     val request = ImageRequest.Builder(context)
@@ -112,11 +112,9 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {},viewModel: SavedP
     val result = (loader.execute(request) as SuccessResult).drawable
     val bitmap = (result as BitmapDrawable).bitmap
 
-    val resizedBitmap = Bitmap.createScaledBitmap(
+    return Bitmap.createScaledBitmap(
         bitmap, 100, 100, true
-    );
-
-    return resizedBitmap
+    )
 }
 
 @Composable
