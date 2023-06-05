@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.mine.myapplication.GetImagesScreen
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 
 @Composable

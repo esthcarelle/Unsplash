@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.mine.myapplication.components.SavedPhotoDetails
+import com.mine.myapplication.components.SavedPhotosScreen
+import com.mine.myapplication.components.ShowImageDetails
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 
 @Composable

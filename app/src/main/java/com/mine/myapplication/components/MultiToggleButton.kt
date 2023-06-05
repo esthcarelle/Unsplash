@@ -19,12 +19,13 @@ import java.util.*
 fun MultiToggleButton(
     currentSelection: String,
     toggleStates: List<String>,
-    onToggleChange: (String) -> Unit
+    onToggleChange: (String) -> Unit,
+    modifier: Modifier
 ) {
     val selectedTint = MaterialTheme.colors.primary
     val unselectedTint = Color.Unspecified
 
-    Row(modifier = Modifier
+    Row(modifier = modifier
         .height(IntrinsicSize.Min)
         .border(BorderStroke(1.dp, Color.LightGray))) {
         toggleStates.forEachIndexed { index, toggleState ->

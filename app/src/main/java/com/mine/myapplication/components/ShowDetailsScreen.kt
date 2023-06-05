@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.components
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -30,6 +30,7 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.mine.myapplication.MyTopAppBar
 import com.mine.myapplication.model.PhotoEntity
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 import kotlinx.coroutines.Dispatchers
@@ -98,8 +99,7 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {},viewModel: SavedP
 
     })
 }
-
-private suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
+ suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
 
     val loader = ImageLoader(context)
     val request = ImageRequest.Builder(context)
@@ -118,7 +118,7 @@ private suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
 }
 
 @Composable
-private fun LegacyBlurImage(
+fun LegacyBlurImage(
     bitmap: Bitmap,
     blurRadio: Float = 25f,
     modifier: Modifier = Modifier.fillMaxSize()
