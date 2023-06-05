@@ -10,6 +10,7 @@ import android.renderscript.Allocation
 import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -51,6 +52,7 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {},viewModel: SavedP
         },isBlurred = isBlurred.value, onSaveClick = {
             val photoEntity = PhotoEntity(url = url)
             viewModel.saveImage(photoEntity)
+            Toast.makeText(context,"Successfully Saved",Toast.LENGTH_LONG).show()
         }
         )
     }, content = {

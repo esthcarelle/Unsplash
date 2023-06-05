@@ -9,9 +9,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.mine.myapplication.components.SavedPhotoDetails
 import com.mine.myapplication.components.SavedPhotosScreen
 import com.mine.myapplication.components.ShowImageDetails
+import com.mine.myapplication.components.SliderView
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 
 @Composable
@@ -52,6 +55,7 @@ fun PhotosNavGraph() {
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SavedPhotoNavGraph() {
     val navController = rememberNavController()
@@ -82,8 +86,13 @@ fun SavedPhotoNavGraph() {
             arguments = listOf(navArgument("url") { type = NavType.StringType })
         ) {
             /* Using composable function */
+            val pageState = rememberPagerState()
             it.arguments?.getString("url")
-                ?.let { url -> SavedPhotoDetails(url) }
+                ?.let { url -> SliderView(state = pageState, url = url, viewModel = SavedPhotoViewModel(
+                    LocalContext.current.applicationContext
+                            as Application
+                )
+                ) }
         }
     }
 }
