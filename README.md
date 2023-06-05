@@ -17,8 +17,11 @@ The Unsplash It is an Android application developed in Kotlin that allows users 
 - Display a list of saved images
 
 ## Screenshots
-![Screenshot_20230605-171019_Unsplash](https://github.com/esthcarelle/Unsplash/assets/52702726/a1566889-8308-4f78-890b-208fa160604f)![Screenshot_20230605-171014_Unsplash](https://github.com/esthcarelle/Unsplash/assets/52702726/34a7db53-4efd-4a5a-a2ab-2d029e1f999c)
-![Screenshot_20230605-171056_Unsplash](https://github.com/esthcarelle/Unsplash/assets/52702726/2dea4efc-c164-4294-ae4f-6b8ab13bd5bd)![Screenshot_20230605-171037_Unsplash](https://github.com/esthcarelle/Unsplash/assets/52702726/6d0c6045-7a9e-4b02-bbf4-607fdd21aec1)![Screenshot_20230605-171045_Unsplash](https://github.com/esthcarelle/Unsplash/assets/52702726/40d84f62-0a01-41a3-95e6-1872c216bbcc)
+<img src="https://github.com/esthcarelle/Unsplash/assets/52702726/a1566889-8308-4f78-890b-208fa160604f" width="200" />
+<img src="https://github.com/esthcarelle/Unsplash/assets/52702726/34a7db53-4efd-4a5a-a2ab-2d029e1f999c" width="200" />
+<img src="https://github.com/esthcarelle/Unsplash/assets/52702726/2dea4efc-c164-4294-ae4f-6b8ab13bd5bd" width="200" />
+<img src="https://github.com/esthcarelle/Unsplash/assets/52702726/6d0c6045-7a9e-4b02-bbf4-607fdd21aec1" width="200" />
+<img src="https://github.com/esthcarelle/Unsplash/assets/52702726/40d84f62-0a01-41a3-95e6-1872c216bbcc" width="200" />
 
 ## Prerequisites
 
