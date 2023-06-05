@@ -14,9 +14,9 @@ fun MyTopAppBar(
     onBackClick: () -> Unit = {},
     onEditClick: (Float) -> Unit,
     onSaveClick: () -> Unit = {},
-    onBlurClick:(Float) -> Unit = {},
+    onBlurClick: (Float) -> Unit = {},
     onZoomClick: () -> Unit = {},
-    onRevertClick:() -> Unit ={},
+    onRevertClick: () -> Unit = {},
     imageState: String = "Original"
 ) {
     TopAppBar(title = { Text(text = "Details") },
@@ -29,7 +29,7 @@ fun MyTopAppBar(
             DropDownMenuFrame()
 
             DropDownMenu(onBlurClick = {
-                    onBlurClick.invoke(10f)
+                onBlurClick.invoke(10f)
             },
                 onRevert = { onRevertClick.invoke() },
                 onZoomClick = { onZoomClick.invoke() }

@@ -17,11 +17,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.mine.myapplication.model.PhotoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SavedPhotoDetails(url: String,imageState: String) {
+fun SavedPhotoDetails(photoEntity: PhotoEntity) {
     val currentSelection = remember { mutableStateOf("Original") }
     val isBlurred = remember {
         mutableStateOf(false)
@@ -38,15 +39,15 @@ fun SavedPhotoDetails(url: String,imageState: String) {
                 isBlurred.value = currentSelection.value != "Original"
             }
         )
-        ImageDetail(url = url, isBlurred = isBlurred.value, imageState = imageState)
+        ImageDetail(photoEntity = photoEntity, isBlurred = isBlurred.value, imageState = photoEntity.imageState)
     }
 }
 
 @Composable
-fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: String,imageState: String = "Original") {
+fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photoEntity: PhotoEntity,imageState: String = "Original") {
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
     val context = LocalContext.current
-    val clickCount = remember { mutableStateOf(0.1f) }
+    val clickCount = remember { mutableStateOf(10f) }
 
     Card(
         modifier = Modifier
@@ -55,7 +56,7 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: 
         shape = RoundedCornerShape(10.dp)
     ) {
         val request = ImageRequest.Builder(LocalContext.current)
-            .data(url)
+            .data(photoEntity.url)
             .build()
 
         if (imageState == "Original")
@@ -69,7 +70,7 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: 
             LaunchedEffect(imageState) {
                 withContext(Dispatchers.IO) {
                     val drawable =
-                        uriToBitmap(context, url)
+                        uriToBitmap(context, photoEntity.url)
                     bitmapState.value = drawable
                 }
             }
@@ -86,7 +87,7 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, url: 
                 }
             }
         } else if (imageState == "Zoom") {
-            ZoomableComposable(url = url, offSetX = 0f, offSetY = 0f, scale = 1f)
+            ZoomableComposable(url = photoEntity.url, offSetX = photoEntity.offSetX, offSetY = photoEntity.offSetY, scale = photoEntity.scale, isEditable = false)
         }
     }
 }

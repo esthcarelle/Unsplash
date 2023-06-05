@@ -7,11 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import coil.size.Scale
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -48,7 +44,7 @@ fun SliderView(state: PagerState, url:String, viewModel: SavedPhotoViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(contentAlignment = Alignment.BottomCenter) {
-                SavedPhotoDetails(url = imageUrl.value,imageUrls[page].imageState)
+                SavedPhotoDetails(photoEntity = imageUrls[page])
             }
         }
     }

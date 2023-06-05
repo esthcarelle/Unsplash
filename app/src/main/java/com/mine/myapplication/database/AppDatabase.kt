@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.mine.myapplication.dao.PhotoDao
 import com.mine.myapplication.model.PhotoEntity
 
-@Database(entities = [(PhotoEntity::class)], version = 2)
+@Database(entities = [(PhotoEntity::class)], version = 3)
 abstract class ImageRoomDatabase: RoomDatabase() {
 
     abstract fun photoDao(): PhotoDao

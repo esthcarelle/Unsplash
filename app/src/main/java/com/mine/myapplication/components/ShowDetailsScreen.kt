@@ -41,20 +41,35 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: Saved
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
     val context = LocalContext.current
     val imageState = remember { mutableStateOf("Original") }
-
+    val offSetY = remember {
+        mutableStateOf(0f)
+    }
+    val offSetX = remember {
+        mutableStateOf(0f)
+    }
+    val scale = remember { mutableStateOf(1f) }
     Scaffold(topBar = {
         MyTopAppBar(onBackClick = onBackClick, onEditClick = {
             clickCount.value = it
             imageState.value = imageState.value
-        }, onBlurClick = { imageState.value = "Blurred"
+        }, onBlurClick = {
+            imageState.value = "Blurred"
             clickCount.value = it
-                         },
+        },
             onZoomClick = { imageState.value = "Zoom" },
-            onRevertClick = {imageState.value = "Original"},
+            onRevertClick = { imageState.value = "Original" },
             imageState = imageState.value,
             onSaveClick = {
+
                 val photoEntity = PhotoEntity(url = url)
+
+                photoEntity.imageState = imageState.value
+                photoEntity.offSetX = offSetX.value
+                photoEntity.offSetY = offSetY.value
+                photoEntity.scale = scale.value
+
                 viewModel.saveImage(photoEntity)
+
                 Toast.makeText(context, "Successfully Saved", Toast.LENGTH_LONG).show()
             }
         )
@@ -97,7 +112,16 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: Saved
                     }
                 }
             } else if (imageState.value == "Zoom") {
-                ZoomableComposable(url = url, offSetX = 0f, offSetY = 0f, scale = 1f)
+                ZoomableComposable(
+                    url = url,
+                    offSetX = 0f,
+                    offSetY = 0f,
+                    scale = 1f,
+                    onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
+                        offSetX.value = zoomOffSetX
+                        offSetY.value = zoomOffSetY
+                        scale.value = zoomScale
+                    })
             }
         }
 
