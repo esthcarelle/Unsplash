@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.components
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -11,7 +11,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.mine.myapplication.components.BottomNavItem
+import com.mine.myapplication.R
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {

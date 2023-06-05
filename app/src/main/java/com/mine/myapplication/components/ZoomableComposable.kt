@@ -23,7 +23,7 @@ fun ZoomableComposable(
     scale: Float,
     offSetX: Float,
     offSetY: Float,
-    onZoom: (Float, Float, Float) -> Unit = { offSetY, offSetX, scale -> }
+    onZoom: (Float, Float, Float) -> Unit = { _, _, _ -> }
 ) {
     var scale by remember { mutableStateOf(scale) }
     var offsetX by remember { mutableStateOf(offSetX) }

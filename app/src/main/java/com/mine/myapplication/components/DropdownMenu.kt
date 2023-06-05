@@ -11,7 +11,9 @@ import androidx.compose.ui.platform.LocalContext
 fun DropDownMenu(
     onBlurClick: () -> Unit = {},
     onZoomClick: () -> Unit = {},
-    onRevert: () -> Unit = {}
+    onRevert: () -> Unit = {},
+    onLandScape: () -> Unit = {},
+    onPortrait:() -> Unit = {}
 ) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
@@ -39,11 +41,19 @@ fun DropDownMenu(
             content = { Text("Revert") },
             onClick = { onRevert.invoke() }
         )
+        DropdownMenuItem(
+            content = { Text("Landscape") },
+            onClick = { onLandScape.invoke() }
+        )
+        DropdownMenuItem(
+            content = { Text("Portrait") },
+            onClick = { onPortrait.invoke() }
+        )
     }
 }
 
 @Composable
-fun DropDownMenuFrame() {
+fun DropDownMenuFrame(onBlack: () -> Unit = {},onGold: () -> Unit = {},onLight: () -> Unit = {},onDark: () -> Unit = {}) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
@@ -60,19 +70,19 @@ fun DropDownMenuFrame() {
     ) {
         DropdownMenuItem(
             content = { Text("Black Wood") },
-            onClick = { }
+            onClick = { onBlack.invoke() }
         )
         DropdownMenuItem(
-            content = { Text("Gold") },
-            onClick = { }
+            content = { Text("Gold Wood") },
+            onClick = { onGold.invoke() }
         )
         DropdownMenuItem(
             content = { Text("Light Wood") },
-            onClick = { }
+            onClick = { onLight.invoke()}
         )
         DropdownMenuItem(
-            content = { Text("Black") },
-            onClick = { }
+            content = { Text("Dark Wood") },
+            onClick = { onDark.invoke() }
         )
     }
 }

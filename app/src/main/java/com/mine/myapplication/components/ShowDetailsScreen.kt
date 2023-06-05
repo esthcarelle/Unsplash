@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.PaintDrawable
 import android.os.Build
 import android.renderscript.Allocation
 import android.renderscript.RenderScript
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
@@ -22,25 +24,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.mine.myapplication.model.PhotoEntity
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.mine.myapplication.R
+import com.mine.myapplication.components.Constants.BLACK_FRAME
+import com.mine.myapplication.components.Constants.BLURRED
+import com.mine.myapplication.components.Constants.DARK_FRAME
+import com.mine.myapplication.components.Constants.GOLD_FRAME
+import com.mine.myapplication.components.Constants.LANDSCAPE
+import com.mine.myapplication.components.Constants.LIGHT_FRAME
+import com.mine.myapplication.components.Constants.ORIGINAL
+import com.mine.myapplication.components.Constants.PORTRAIT
+import com.mine.myapplication.components.Constants.ZOOM
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: SavedPhotoViewModel) {
+fun ShowImageDetails(
+    onSaveClick: () -> Unit = {},
+    url: String,
+    onBackClick: () -> Unit = {},
+    viewModel: SavedPhotoViewModel
+) {
     val clickCount = remember { mutableStateOf(0.1f) }
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
     val context = LocalContext.current
-    val imageState = remember { mutableStateOf("Original") }
+    val imageState = remember { mutableStateOf(ORIGINAL) }
     val offSetY = remember {
         mutableStateOf(0f)
     }
@@ -48,17 +69,27 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: Saved
         mutableStateOf(0f)
     }
     val scale = remember { mutableStateOf(1f) }
+    val rotationZ = remember { mutableStateOf(0f) }
+
     Scaffold(topBar = {
-        MyTopAppBar(onBackClick = onBackClick, onEditClick = {
-            clickCount.value = it
-            imageState.value = imageState.value
-        }, onBlurClick = {
-            imageState.value = "Blurred"
+        MyTopAppBar(onBackClick = onBackClick, onBlurClick = {
+            imageState.value = BLURRED
             clickCount.value = it
         },
-            onZoomClick = { imageState.value = "Zoom" },
-            onRevertClick = { imageState.value = "Original" },
-            imageState = imageState.value,
+            onZoomClick = { imageState.value = ZOOM },
+            onRevertClick = { imageState.value = ORIGINAL },
+            onDark = { imageState.value = DARK_FRAME },
+            onLight = { imageState.value = LIGHT_FRAME },
+            onGold = { imageState.value = GOLD_FRAME },
+            onBlack = { imageState.value = BLACK_FRAME },
+            onLandScape = {
+                imageState.value = LANDSCAPE
+                rotationZ.value = 90f
+            },
+            onPortrait = {
+                imageState.value = PORTRAIT
+                rotationZ.value = 0f
+            },
             onSaveClick = {
 
                 val photoEntity = PhotoEntity(url = url)
@@ -67,51 +98,70 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: Saved
                 photoEntity.offSetX = offSetX.value
                 photoEntity.offSetY = offSetY.value
                 photoEntity.scale = scale.value
+                photoEntity.rotation = rotationZ.value
 
                 viewModel.saveImage(photoEntity)
 
                 Toast.makeText(context, "Successfully Saved", Toast.LENGTH_LONG).show()
+                onSaveClick.invoke()
             }
         )
     }, content = {
-        Card(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            val request = ImageRequest.Builder(LocalContext.current)
-                .data(url)
-                .build()
 
-            if (imageState.value == "Original")
-                AsyncImage(
-                    model = request,
-                    modifier = Modifier,
-                    contentDescription = "",
-                    contentScale = ContentScale.FillBounds
-                )
-            else if (imageState.value == "Blurred") {
-                LaunchedEffect(imageState.value) {
-                    withContext(Dispatchers.IO) {
-                        val drawable =
-                            uriToBitmap(context, url)
-                        bitmapState.value = drawable
+        val request = ImageRequest.Builder(LocalContext.current)
+            .data(url)
+            .build()
+
+        when (imageState.value) {
+            ORIGINAL, LANDSCAPE, PORTRAIT -> {
+                var modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+                Card(
+                    modifier = modifier,
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    AsyncImage(
+                        model = request,
+                        modifier = Modifier.graphicsLayer(rotationZ = rotationZ.value),
+                        contentDescription = "",
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
+            }
+            BLURRED -> {
+                var modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+                Card(
+                    modifier = modifier,
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    LaunchedEffect(imageState.value) {
+                        withContext(Dispatchers.IO) {
+                            val drawable =
+                                uriToBitmap(context, url)
+                            bitmapState.value = drawable
+                        }
+                    }
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                        bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
+                    } else {
+                        bitmapState.value?.let { it1 ->
+                            BlurImage(
+                                it1,
+                                Modifier
+                                    .fillMaxSize()
+                                    .blur(
+                                        radiusX = clickCount.value.dp,
+                                        radiusY = clickCount.value.dp
+                                    )
+                            )
+                        }
                     }
                 }
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                    bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
-                } else {
-                    bitmapState.value?.let { it1 ->
-                        BlurImage(
-                            it1,
-                            Modifier
-                                .fillMaxSize()
-                                .blur(radiusX = clickCount.value.dp, radiusY = clickCount.value.dp)
-                        )
-                    }
-                }
-            } else if (imageState.value == "Zoom") {
+            }
+            "Zoom" -> {
                 ZoomableComposable(
                     url = url,
                     offSetX = 0f,
@@ -123,9 +173,23 @@ fun ShowImageDetails(url: String, onBackClick: () -> Unit = {}, viewModel: Saved
                         scale.value = zoomScale
                     })
             }
+            else -> {
+                var painter: Painter = painterResource(id = R.drawable.black_frame)
+                when (imageState.value) {
+                    BLACK_FRAME -> painter = painterResource(id = R.drawable.black_frame)
+                    DARK_FRAME -> painter = painterResource(id = R.drawable.dark_wood_frame)
+                    GOLD_FRAME -> painter = painterResource(id = R.drawable.gold_frame)
+                    LIGHT_FRAME -> painter = painterResource(id = R.drawable.light_wood_frame)
+                }
+                FrameComposable(
+                    url = url,
+                    imagePainter = painter,
+                    modifier = Modifier.wrapContentSize()
+                )
+            }
         }
-
-    })
+    }
+    )
 }
 
 suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {

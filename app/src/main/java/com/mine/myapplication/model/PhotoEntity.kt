@@ -25,6 +25,9 @@ class PhotoEntity {
     @ColumnInfo(name = "scale")
     var scale: Float = 1f
 
+    @ColumnInfo(name = "rotation")
+    var rotation: Float = 0f
+
     constructor() {}
 
     constructor(url: String) {

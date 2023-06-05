@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.navigation
 
 import android.app.Application
 import android.net.Uri
@@ -11,7 +11,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.mine.myapplication.components.SavedPhotoDetails
+import com.mine.myapplication.GetImagesScreen
 import com.mine.myapplication.components.SavedPhotosScreen
 import com.mine.myapplication.components.ShowImageDetails
 import com.mine.myapplication.components.SliderView
@@ -44,6 +44,7 @@ fun PhotosNavGraph() {
             it.arguments?.getString("url")
                 ?.let { url ->
                     ShowImageDetails(
+                        onSaveClick = { navController.popBackStack() },
                         url = url, viewModel = (
                                 SavedPhotoViewModel(
                                     LocalContext.current.applicationContext
@@ -88,11 +89,14 @@ fun SavedPhotoNavGraph() {
             /* Using composable function */
             val pageState = rememberPagerState()
             it.arguments?.getString("url")
-                ?.let { url -> SliderView(state = pageState, url = url, viewModel = SavedPhotoViewModel(
-                    LocalContext.current.applicationContext
-                            as Application
-                )
-                ) }
+                ?.let { url ->
+                    SliderView(
+                        state = pageState, url = url, viewModel = SavedPhotoViewModel(
+                            LocalContext.current.applicationContext
+                                    as Application
+                        )
+                    )
+                }
         }
     }
 }

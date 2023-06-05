@@ -12,12 +12,16 @@ import androidx.compose.runtime.Composable
 @Composable
 fun MyTopAppBar(
     onBackClick: () -> Unit = {},
-    onEditClick: (Float) -> Unit,
     onSaveClick: () -> Unit = {},
     onBlurClick: (Float) -> Unit = {},
     onZoomClick: () -> Unit = {},
     onRevertClick: () -> Unit = {},
-    imageState: String = "Original"
+    onBlack: () -> Unit = {},
+    onGold: () -> Unit = {},
+    onLight: () -> Unit = {},
+    onDark: () -> Unit = {},
+    onLandScape: () -> Unit = {},
+    onPortrait:() -> Unit = {}
 ) {
     TopAppBar(title = { Text(text = "Details") },
         navigationIcon = {
@@ -26,20 +30,24 @@ fun MyTopAppBar(
             }
         },
         actions = {
-            DropDownMenuFrame()
+            DropDownMenuFrame(
+                onDark = { onDark.invoke() },
+                onGold = { onGold.invoke() },
+                onBlack = { onBlack.invoke() },
+                onLight = { onLight.invoke() })
 
             DropDownMenu(onBlurClick = {
-                onBlurClick.invoke(10f)
+                onBlurClick.invoke(1f)
             },
                 onRevert = { onRevertClick.invoke() },
-                onZoomClick = { onZoomClick.invoke() }
+                onZoomClick = { onZoomClick.invoke() },
+                onLandScape = { onLandScape.invoke() },
+                onPortrait = { onPortrait.invoke() }
             )
-
             IconButton(onClick = {
                 onSaveClick.invoke()
             }) {
                 Icon(Icons.Default.Done, null)
             }
-
         })
 }

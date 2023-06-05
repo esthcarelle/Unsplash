@@ -1,8 +1,6 @@
 package com.mine.myapplication.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -11,8 +9,6 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.mine.myapplication.model.PhotoEntity
-import com.mine.myapplication.R
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -34,7 +30,7 @@ fun SliderView(state: PagerState, url:String, viewModel: SavedPhotoViewModel) {
     HorizontalPager(
         state = state,
         count = imageUrls.size, modifier = Modifier
-            .height(300.dp)
+            .height(400.dp)
             .fillMaxWidth()
     ) { page ->
         imageUrls[page].url.also { imageUrl.value = it }

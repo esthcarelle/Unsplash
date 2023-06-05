@@ -12,18 +12,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.mine.myapplication.R
+import com.mine.myapplication.components.Constants.BLACK_FRAME
+import com.mine.myapplication.components.Constants.BLURRED
+import com.mine.myapplication.components.Constants.DARK_FRAME
+import com.mine.myapplication.components.Constants.GOLD_FRAME
+import com.mine.myapplication.components.Constants.LANDSCAPE
+import com.mine.myapplication.components.Constants.LIGHT_FRAME
+import com.mine.myapplication.components.Constants.ORIGINAL
+import com.mine.myapplication.components.Constants.PORTRAIT
+import com.mine.myapplication.components.Constants.ZOOM
 import com.mine.myapplication.model.PhotoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
 fun SavedPhotoDetails(photoEntity: PhotoEntity) {
-    val currentSelection = remember { mutableStateOf("Original") }
+    val currentSelection = remember { mutableStateOf("Image") }
     val isBlurred = remember {
         mutableStateOf(false)
     }
@@ -36,7 +49,7 @@ fun SavedPhotoDetails(photoEntity: PhotoEntity) {
             toggleStates = listOf("Image"),
             onToggleChange = {
                 currentSelection.value = it
-                isBlurred.value = currentSelection.value != "Original"
+                isBlurred.value = currentSelection.value != ORIGINAL
             }
         )
         ImageDetail(photoEntity = photoEntity, isBlurred = isBlurred.value, imageState = photoEntity.imageState)
@@ -44,14 +57,14 @@ fun SavedPhotoDetails(photoEntity: PhotoEntity) {
 }
 
 @Composable
-fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photoEntity: PhotoEntity,imageState: String = "Original") {
+fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photoEntity: PhotoEntity,imageState: String) {
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
     val context = LocalContext.current
-    val clickCount = remember { mutableStateOf(10f) }
+    val clickCount = remember { mutableStateOf(1f) }
 
     Card(
         modifier = Modifier
-            .fillMaxSize()
+            .wrapContentSize()
             .padding(8.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -59,14 +72,14 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photo
             .data(photoEntity.url)
             .build()
 
-        if (imageState == "Original")
+        if (imageState == ORIGINAL || imageState == LANDSCAPE || imageState == PORTRAIT)
             AsyncImage(
                 model = request,
-                modifier = Modifier,
+                modifier = Modifier.graphicsLayer(rotationZ = photoEntity.rotation),
                 contentDescription = "",
                 contentScale = ContentScale.FillBounds
             )
-        else if (imageState == "Blurred") {
+        else if (imageState == BLURRED) {
             LaunchedEffect(imageState) {
                 withContext(Dispatchers.IO) {
                     val drawable =
@@ -86,8 +99,21 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photo
                     )
                 }
             }
-        } else if (imageState == "Zoom") {
+        } else if (imageState == ZOOM) {
             ZoomableComposable(url = photoEntity.url, offSetX = photoEntity.offSetX, offSetY = photoEntity.offSetY, scale = photoEntity.scale, isEditable = false)
+        } else {
+            var painter: Painter = painterResource(id = R.drawable.black_frame)
+            when (imageState) {
+                BLACK_FRAME -> painter = painterResource(id = R.drawable.black_frame)
+                DARK_FRAME -> painter = painterResource(id = R.drawable.dark_wood_frame)
+                GOLD_FRAME -> painter = painterResource(id = R.drawable.gold_frame)
+                LIGHT_FRAME -> painter = painterResource(id = R.drawable.light_wood_frame)
+            }
+            FrameComposable(
+                url = photoEntity.url,
+                imagePainter = painter,
+                modifier = Modifier.wrapContentSize()
+            )
         }
     }
 }
