@@ -140,7 +140,7 @@ fun ShowImageDetails(
                     LaunchedEffect(imageState.value) {
                         withContext(Dispatchers.IO) {
                             val drawable =
-                                uriToBitmap(context, url)
+                                viewModel.uriToBitmap(context, url)
                             bitmapState.value = drawable
                         }
                     }
@@ -161,7 +161,7 @@ fun ShowImageDetails(
                     }
                 }
             }
-            "Zoom" -> {
+            ZOOM -> {
                 ZoomableComposable(
                     url = url,
                     offSetX = 0f,
