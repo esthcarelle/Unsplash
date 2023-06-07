@@ -22,7 +22,7 @@ fun FrameComposable(modifier: Modifier,url: String, imagePainter: Painter) {
         Card(
             modifier = Modifier
                 .height(400.dp)
-                .padding(8.dp),
+                .padding(16.dp),
             shape = RoundedCornerShape(4.dp)
         ) {
             AsyncImage(

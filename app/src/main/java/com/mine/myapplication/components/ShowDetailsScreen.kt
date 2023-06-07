@@ -49,6 +49,7 @@ import com.mine.myapplication.components.Constants.LIGHT_FRAME
 import com.mine.myapplication.components.Constants.ORIGINAL
 import com.mine.myapplication.components.Constants.PORTRAIT
 import com.mine.myapplication.components.Constants.ZOOM
+import com.mine.myapplication.utils.FrameUtil
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -116,18 +117,18 @@ fun ShowImageDetails(
             ORIGINAL, LANDSCAPE, PORTRAIT -> {
                 var modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp)
-                Card(
+                    .padding(16.dp)
+                CustomImage(
                     modifier = modifier,
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    AsyncImage(
-                        model = request,
-                        modifier = Modifier.graphicsLayer(rotationZ = rotationZ.value),
-                        contentDescription = "",
-                        contentScale = ContentScale.FillBounds
-                    )
-                }
+                    url = url,
+                    photoEntity = PhotoEntity(),
+                    isEditable = true,
+                    imagePainter = painterResource(id = R.drawable.ic_launcher_background),
+                    onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
+                        offSetX.value = zoomOffSetX
+                        offSetY.value = zoomOffSetY
+                        scale.value = zoomScale
+                    })
             }
             BLURRED -> {
                 var modifier = Modifier
@@ -162,11 +163,12 @@ fun ShowImageDetails(
                 }
             }
             ZOOM -> {
-                ZoomableComposable(
+                CustomImage(
+                    modifier = Modifier,
                     url = url,
-                    offSetX = 0f,
-                    offSetY = 0f,
-                    scale = 1f,
+                    photoEntity = PhotoEntity(),
+                    isEditable = true,
+                    imagePainter = painterResource(id = R.drawable.ic_launcher_background),
                     onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
                         offSetX.value = zoomOffSetX
                         offSetY.value = zoomOffSetY
@@ -174,18 +176,18 @@ fun ShowImageDetails(
                     })
             }
             else -> {
-                var painter: Painter = painterResource(id = R.drawable.black_frame)
-                when (imageState.value) {
-                    BLACK_FRAME -> painter = painterResource(id = R.drawable.black_frame)
-                    DARK_FRAME -> painter = painterResource(id = R.drawable.dark_wood_frame)
-                    GOLD_FRAME -> painter = painterResource(id = R.drawable.gold_frame)
-                    LIGHT_FRAME -> painter = painterResource(id = R.drawable.light_wood_frame)
-                }
-                FrameComposable(
+                CustomImage(
+                    modifier = Modifier,
                     url = url,
-                    imagePainter = painter,
-                    modifier = Modifier.wrapContentSize()
-                )
+                    photoEntity = PhotoEntity(),
+                    isEditable = true,
+                    alpha = 1f,
+                    imagePainter = painterResource(id = FrameUtil.painterToFrame(imageState.value)),
+                    onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
+                        offSetX.value = zoomOffSetX
+                        offSetY.value = zoomOffSetY
+                        scale.value = zoomScale
+                    })
             }
         }
     }
