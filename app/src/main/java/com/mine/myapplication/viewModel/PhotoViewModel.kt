@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mine.myapplication.ResponseItem
+import com.mine.myapplication.components.Constants.CLIENT_ID
 import com.mine.myapplication.service.APIService
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,7 @@ class PhotoViewModel : ViewModel() {
             try {
                 _imagesList.clear()
                 val list = apiService.getPhotos(
-                    "Client-ID As9FWYGaC73kkmWQcNV88XLOax02sC1PNPn1HZ_So_8",
+                    CLIENT_ID,
                     20
                 )
 

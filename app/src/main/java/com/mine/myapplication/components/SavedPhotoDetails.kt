@@ -31,6 +31,7 @@ import com.mine.myapplication.components.Constants.ORIGINAL
 import com.mine.myapplication.components.Constants.PORTRAIT
 import com.mine.myapplication.components.Constants.ZOOM
 import com.mine.myapplication.model.PhotoEntity
+import com.mine.myapplication.utils.FrameUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -100,18 +101,15 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photo
                 }
             }
         } else if (imageState == ZOOM) {
-            ZoomableComposable(url = photoEntity.url, offSetX = photoEntity.offSetX, offSetY = photoEntity.offSetY, scale = photoEntity.scale, isEditable = false)
+//            ZoomableComposable(url = photoEntity.url, offSetX = photoEntity.offSetX, offSetY = photoEntity.offSetY, scale = photoEntity.scale, isEditable = false)
+            CustomImage(modifier = modifier, url = photoEntity.url , photoEntity = photoEntity, imagePainter = painterResource(
+                id = FrameUtil.painterToFrame(imageState)
+            ), isEditable = false)
         } else {
-            var painter: Painter = painterResource(id = R.drawable.black_frame)
-            when (imageState) {
-                BLACK_FRAME -> painter = painterResource(id = R.drawable.black_frame)
-                DARK_FRAME -> painter = painterResource(id = R.drawable.dark_wood_frame)
-                GOLD_FRAME -> painter = painterResource(id = R.drawable.gold_frame)
-                LIGHT_FRAME -> painter = painterResource(id = R.drawable.light_wood_frame)
-            }
+
             FrameComposable(
                 url = photoEntity.url,
-                imagePainter = painter,
+                imagePainter = painterResource(id = FrameUtil.painterToFrame(imageState)),
                 modifier = Modifier.wrapContentSize()
             )
         }
