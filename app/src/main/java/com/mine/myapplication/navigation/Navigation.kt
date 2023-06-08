@@ -11,7 +11,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.mine.myapplication.GetImagesScreen
+import com.mine.myapplication.components.GetImagesScreen
 import com.mine.myapplication.components.SavedPhotosScreen
 import com.mine.myapplication.components.ShowImageDetails
 import com.mine.myapplication.components.SliderView

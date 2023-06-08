@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.PaintDrawable
 import android.os.Build
 import android.renderscript.Allocation
 import android.renderscript.RenderScript
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
@@ -24,15 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
-import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.mine.myapplication.model.PhotoEntity
@@ -40,15 +34,15 @@ import com.mine.myapplication.viewModel.SavedPhotoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.mine.myapplication.R
-import com.mine.myapplication.components.Constants.BLACK_FRAME
-import com.mine.myapplication.components.Constants.BLURRED
-import com.mine.myapplication.components.Constants.DARK_FRAME
-import com.mine.myapplication.components.Constants.GOLD_FRAME
-import com.mine.myapplication.components.Constants.LANDSCAPE
-import com.mine.myapplication.components.Constants.LIGHT_FRAME
-import com.mine.myapplication.components.Constants.ORIGINAL
-import com.mine.myapplication.components.Constants.PORTRAIT
-import com.mine.myapplication.components.Constants.ZOOM
+import com.mine.myapplication.utils.Constants.BLACK_FRAME
+import com.mine.myapplication.utils.Constants.BLURRED
+import com.mine.myapplication.utils.Constants.DARK_FRAME
+import com.mine.myapplication.utils.Constants.GOLD_FRAME
+import com.mine.myapplication.utils.Constants.LANDSCAPE
+import com.mine.myapplication.utils.Constants.LIGHT_FRAME
+import com.mine.myapplication.utils.Constants.ORIGINAL
+import com.mine.myapplication.utils.Constants.PORTRAIT
+import com.mine.myapplication.utils.Constants.ZOOM
 import com.mine.myapplication.utils.FrameUtil
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

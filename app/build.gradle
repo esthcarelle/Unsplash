@@ -80,4 +80,5 @@ dependencies {
     implementation "androidx.paging:paging-compose:1.0.0-alpha13"
     implementation "com.google.accompanist:accompanist-pager:0.22.0-rc"
     implementation "com.google.accompanist:accompanist-placeholder:0.19.0"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
