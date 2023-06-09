@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -139,22 +139,35 @@ fun ShowImageDetails(
                             bitmapState.value = drawable
                         }
                     }
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                        bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
-                    } else {
-                        bitmapState.value?.let { it1 ->
-                            BlurImage(
-                                it1,
-                                Modifier
-                                    .fillMaxSize()
-                                    .blur(
-                                        radiusX = clickCount.value.dp,
-                                        radiusY = clickCount.value.dp
-                                    )
-                            )
-                        }
-                    }
+                    CustomImage(
+                        modifier = modifier,
+                        url = url,
+                        photoEntity = PhotoEntity(),
+                        isEditable = true,
+                        blurRatio = clickCount.value,
+                        imagePainter = painterResource(id = R.drawable.ic_launcher_background),
+                        onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
+                            offSetX.value = zoomOffSetX
+                            offSetY.value = zoomOffSetY
+                            scale.value = zoomScale
+                        })
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+//                        bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
+//                    } else {
+//                        bitmapState.value?.let { it1 ->
+//                            BlurImage(
+//                                it1,
+//                                Modifier
+//                                    .fillMaxSize()
+//                                    .blur(
+//                                        radiusX = clickCount.value.dp,
+//                                        radiusY = clickCount.value.dp
+//                                    )
+//                            )
+//                        }
+//                    }
                 }
+
             }
             ZOOM -> {
                 CustomImage(
