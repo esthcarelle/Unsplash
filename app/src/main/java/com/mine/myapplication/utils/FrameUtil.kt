@@ -13,23 +13,19 @@ import com.mine.myapplication.R
 class FrameUtil {
     companion object {
 
-//        fun blurImageUtil(context: Context, bitmap: Bitmap, blurRadio: Float): Bitmap {
-//            val inputAllocation = Allocation.createFromBitmap(renderScript, bitmap)
-//            val outputBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
-//            val outputAllocation = Allocation.createFromBitmap(renderScript, outputBitmap)
-//
-//            scriptBlur.apply {
-//                setRadius(blurRadius)
-//                setInput(inputAllocation)
-//                forEach(outputAllocation)
-//            }
-//
-//            outputAllocation.copyTo(outputBitmap)
-//            inputAllocation.destroy()
-//            outputAllocation.destroy()
-//
-//            return outputBitmap
-//        }
+        fun blurImageUtil(context: Context, bitmap: Bitmap, blurRadio: Float): Bitmap {
+            val renderScript = RenderScript.create(context)
+            val bitmapAlloc =
+                Allocation.createFromBitmap(renderScript, bitmap)
+            ScriptIntrinsicBlur.create(renderScript, bitmapAlloc.element).apply {
+                setRadius(blurRadio)
+                setInput(bitmapAlloc)
+                forEach(bitmapAlloc)
+            }
+            bitmapAlloc.copyTo(bitmap)
+            renderScript.destroy()
+            return bitmap
+        }
 
         fun painterToFrame(imageState: String): Int {
             var painter: Int = when (imageState) {
