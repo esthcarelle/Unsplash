@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.model
 
 data class Response(
 	val response: List<ResponseItem?>? = null

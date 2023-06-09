@@ -15,6 +15,7 @@ import com.mine.myapplication.components.GetImagesScreen
 import com.mine.myapplication.components.SavedPhotosScreen
 import com.mine.myapplication.components.ShowImageDetails
 import com.mine.myapplication.components.SliderView
+import com.mine.myapplication.viewModel.PhotoViewModel
 import com.mine.myapplication.viewModel.SavedPhotoViewModel
 
 @Composable
@@ -34,7 +35,7 @@ fun PhotosNavGraph() {
                         Uri.encode(url)
                     }"
                 )
-            })
+            },vm = PhotoViewModel())
         }
         composable(
             route = "details?url={url}",

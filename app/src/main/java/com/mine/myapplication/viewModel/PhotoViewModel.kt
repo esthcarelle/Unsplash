@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mine.myapplication.ResponseItem
+import com.mine.myapplication.model.ResponseItem
 import com.mine.myapplication.utils.Constants.CLIENT_ID
 import com.mine.myapplication.service.APIService
 import kotlinx.coroutines.launch

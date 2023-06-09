@@ -10,5 +10,5 @@ object Constants {
     const val PORTRAIT = "Portrait"
     const val LANDSCAPE = "Landscape"
     const val ORIGINAL = "Original"
-    const val CLIENT_ID = "Client-ID dixtqIxMkkn0gBKvye_yGfKHH3dUxemwT_QwBFwYW04"
+    const val CLIENT_ID = "Client-ID cQuqIj62Uv8H0HUaXiDhWUiX8_kdflUC-jF4MlOu6Is"
 }

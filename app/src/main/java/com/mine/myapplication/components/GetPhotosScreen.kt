@@ -1,19 +1,14 @@
 package com.mine.myapplication.components
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -30,8 +25,7 @@ import coil.request.ImageRequest
 import com.mine.myapplication.viewModel.PhotoViewModel
 
 @Composable
-fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit) {
-    val vm = PhotoViewModel()
+fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit, vm: PhotoViewModel) {
     val scrollState = rememberLazyGridState()
     val endOfListReached by remember {
         derivedStateOf {
@@ -47,7 +41,11 @@ fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit) {
 
     // act when end of list reached
 
-    LazyVerticalGrid(state = scrollState,modifier = Modifier.fillMaxSize(), columns = GridCells.Fixed(2)) {
+    LazyVerticalGrid(
+        state = scrollState,
+        modifier = Modifier.fillMaxSize(),
+        columns = GridCells.Fixed(2)
+    ) {
         items(vm.imagesList) { photo ->
             Card(
                 modifier = Modifier
@@ -60,7 +58,7 @@ fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit) {
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(photo.urls?.full)
+                        .data(photo.urls?.regular)
                         .build(),
                     modifier = Modifier,
                     contentDescription = "",
@@ -72,6 +70,8 @@ fun GetImagesScreen(onNavigateToDetailsScreen: (String) -> Unit) {
 //            Log.e(TAG, "GetImagesScreen: " )
     }
 }
-fun LazyGridState.isScrolledToEnd() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+
+fun LazyGridState.isScrolledToEnd() =
+    layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
 
 
