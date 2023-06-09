@@ -82,18 +82,18 @@ fun ImageDetail(modifier: Modifier = Modifier, isBlurred: Boolean = false, photo
                     bitmapState.value = drawable
                 }
             }
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
-            } else {
-                bitmapState.value?.let { it1 ->
-                    BlurImage(
-                        it1,
-                        Modifier
-                            .fillMaxSize()
-                            .blur(radiusX = clickCount.value.dp, radiusY = clickCount.value.dp)
-                    )
-                }
-            }
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+//                bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
+//            } else {
+//                bitmapState.value?.let { it1 ->
+//                    BlurImage(
+//                        it1,
+//                        Modifier
+//                            .fillMaxSize()
+//                            .blur(radiusX = clickCount.value.dp, radiusY = clickCount.value.dp)
+//                    )
+//                }
+//            }
         } else if (imageState == ZOOM) {
 //            ZoomableComposable(url = photoEntity.url, offSetX = photoEntity.offSetX, offSetY = photoEntity.offSetY, scale = photoEntity.scale, isEditable = false)
             CustomImage(modifier = modifier, url = photoEntity.url , photoEntity = photoEntity, imagePainter = painterResource(

@@ -124,6 +124,7 @@ fun ShowImageDetails(
                         scale.value = zoomScale
                     })
             }
+
             BLURRED -> {
                 var modifier = Modifier
                     .fillMaxSize()
@@ -151,24 +152,10 @@ fun ShowImageDetails(
                             offSetY.value = zoomOffSetY
                             scale.value = zoomScale
                         })
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-//                        bitmapState.value?.let { it1 -> LegacyBlurImage(it1, clickCount.value) }
-//                    } else {
-//                        bitmapState.value?.let { it1 ->
-//                            BlurImage(
-//                                it1,
-//                                Modifier
-//                                    .fillMaxSize()
-//                                    .blur(
-//                                        radiusX = clickCount.value.dp,
-//                                        radiusY = clickCount.value.dp
-//                                    )
-//                            )
-//                        }
-//                    }
                 }
 
             }
+
             ZOOM -> {
                 CustomImage(
                     modifier = Modifier,
@@ -182,6 +169,7 @@ fun ShowImageDetails(
                         scale.value = zoomScale
                     })
             }
+
             else -> {
                 CustomImage(
                     modifier = Modifier,
@@ -216,28 +204,6 @@ suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
         bitmap, 100, 100, true
     )
 }
-
-@Composable
-fun LegacyBlurImage(
-    bitmap: Bitmap,
-    blurRadio: Float = 25f,
-    modifier: Modifier = Modifier.fillMaxSize()
-) {
-
-    val renderScript = RenderScript.create(LocalContext.current)
-    val bitmapAlloc =
-        Allocation.createFromBitmap(renderScript, bitmap)
-    ScriptIntrinsicBlur.create(renderScript, bitmapAlloc.element).apply {
-        setRadius(blurRadio)
-        setInput(bitmapAlloc)
-        forEach(bitmapAlloc)
-    }
-    bitmapAlloc.copyTo(bitmap)
-    renderScript.destroy()
-
-    BlurImage(bitmap, modifier)
-}
-
 @Composable
 fun BlurImage(
     bitmap: Bitmap,
