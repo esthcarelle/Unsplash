@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mine.myapplication.components.BottomNavItem
+import com.mine.myapplication.ui.components.BottomNavItem
 
 @Composable
 fun BottomNavigationGraph(navController: NavHostController) {

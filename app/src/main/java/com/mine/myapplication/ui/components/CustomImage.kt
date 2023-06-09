@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -35,6 +35,10 @@ import com.mine.myapplication.utils.Constants.DARK_FRAME
 import com.mine.myapplication.utils.Constants.GOLD_FRAME
 import com.mine.myapplication.utils.Constants.LIGHT_FRAME
 import com.mine.myapplication.utils.FrameUtil
+import com.mine.myapplication.utils.FrameUtil.Companion.overlayBitmapToCenter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.math.BigInteger
 
 @Composable
 fun CustomImage(
@@ -44,6 +48,7 @@ fun CustomImage(
     isEditable: Boolean,
     imagePainter: Painter,
     alpha: Float = 0f,
+    blurRatio: Float = 0.1f,
     onZoom: (Float, Float, Float) -> Unit = { _, _, _ -> }
 ) {
     var scale by remember { mutableStateOf(photoEntity.scale) }
@@ -53,6 +58,8 @@ fun CustomImage(
     val request = ImageRequest.Builder(LocalContext.current)
         .data(url)
         .build()
+
+    val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
 
     var modifier: Modifier = modifier
     if (isEditable)
@@ -83,14 +90,24 @@ fun CustomImage(
             shape = RoundedCornerShape(6.dp)
         ) {
             if (photoEntity.imageState == BLURRED || photoEntity.imageState == BLACK_FRAME || photoEntity.imageState == GOLD_FRAME || photoEntity.imageState == DARK_FRAME || photoEntity.imageState == LIGHT_FRAME) {
+                LaunchedEffect(photoEntity.url) {
+                    withContext(Dispatchers.IO) {
+                        val drawable =
+                            uriToBitmap(context, photoEntity.url)
 
-                var frameBitmap : Bitmap = BitmapFactory.decodeResource(
-                        context.resources,
-                        FrameUtil.painterToFrame(photoEntity.imageState)
-                    )
+                        var blurredBitmap = FrameUtil.blurImageUtil(context,bitmap = drawable, blurRadio = 10f)
 
-                var urlToBitmap =
-                frameBitmap?.asImageBitmap()?.let {
+                        var frameBitmap : Bitmap = BitmapFactory.decodeResource(
+                            context.resources,
+                            FrameUtil.painterToFrame(photoEntity.imageState)
+                        )
+
+                        bitmapState.value = blurredBitmap
+
+                    }
+                }
+
+                bitmapState.value?.asImageBitmap()?.let {
                     Image(
                         bitmap = it,
                         contentDescription = null,
