@@ -4,10 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.os.Build
-import android.renderscript.Allocation
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicBlur
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -86,7 +81,6 @@ fun ShowImageDetails(
                 rotationZ.value = 0f
             },
             onSaveClick = {
-
                 val photoEntity = PhotoEntity(url = url)
 
                 photoEntity.imageState = imageState.value
