@@ -1,13 +1,11 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -22,7 +20,7 @@ fun FrameComposable(modifier: Modifier,url: String, imagePainter: Painter) {
         Card(
             modifier = Modifier
                 .height(400.dp)
-                .padding(8.dp),
+                .padding(16.dp),
             shape = RoundedCornerShape(4.dp)
         ) {
             AsyncImage(

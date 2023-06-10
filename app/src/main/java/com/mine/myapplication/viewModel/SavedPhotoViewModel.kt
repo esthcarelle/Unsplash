@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.mine.myapplication.ImageRoomDatabase
+import com.mine.myapplication.database.ImageRoomDatabase
 import com.mine.myapplication.model.PhotoEntity
 import com.mine.myapplication.repository.PhotoRepository
 

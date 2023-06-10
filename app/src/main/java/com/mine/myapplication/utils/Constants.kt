@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.utils
 
 object Constants {
     const val BLACK_FRAME = "Black Frame"
@@ -10,4 +10,5 @@ object Constants {
     const val PORTRAIT = "Portrait"
     const val LANDSCAPE = "Landscape"
     const val ORIGINAL = "Original"
+    const val CLIENT_ID = "Client-ID cQuqIj62Uv8H0HUaXiDhWUiX8_kdflUC-jF4MlOu6Is"
 }

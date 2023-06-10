@@ -1,6 +1,6 @@
 package com.mine.myapplication.service
 
-import com.mine.myapplication.ResponseItem
+import com.mine.myapplication.model.ResponseItem
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

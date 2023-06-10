@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
