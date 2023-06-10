@@ -60,44 +60,44 @@ fun PhotosNavGraph() {
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SavedPhotoNavGraph() {
-//    val navController = rememberNavController()
-//    NavHost(
-//        navController = navController,
-//        startDestination = "saved"
-//    ) {
-//        /* creating route "home" */
-//        composable(route = "saved") {
-//            /* Using composable function */
-//            SavedPhotosScreen(viewModel = (
-//                    SavedPhotoViewModel(
-//                        LocalContext.current.applicationContext
-//                                as Application
-//                    )
-//                    ), onNavigateToDetailsScreen = { url ->
-//                navController.currentBackStackEntry?.arguments?.putString("url", url)
-//                navController.navigate(
-//                    "details?url=${
-//                        Uri.encode(url)
-//                    }"
-//                )
-//            }
-//            )
-//        }
-//        composable(
-//            route = "details?url={url}",
-//            arguments = listOf(navArgument("url") { type = NavType.StringType })
-//        ) {
-//            /* Using composable function */
-//            val pageState = rememberPagerState()
-//            it.arguments?.getString("url")
-//                ?.let { url ->
-//                    SliderView(
-//                        state = pageState, url = url, viewModel = SavedPhotoViewModel(
-//                            LocalContext.current.applicationContext
-//                                    as Application
-//                        )
-//                    )
-//                }
-//        }
-//    }
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "saved"
+    ) {
+        /* creating route "home" */
+        composable(route = "saved") {
+            /* Using composable function */
+            SavedPhotosScreen(viewModel = (
+                    SavedPhotoViewModel(
+                        LocalContext.current.applicationContext
+                                as Application
+                    )
+                    ), onNavigateToDetailsScreen = { url ->
+                navController.currentBackStackEntry?.arguments?.putString("url", url)
+                navController.navigate(
+                    "details?url=${
+                        Uri.encode(url)
+                    }"
+                )
+            }
+            )
+        }
+        composable(
+            route = "details?url={url}",
+            arguments = listOf(navArgument("url") { type = NavType.StringType })
+        ) {
+            /* Using composable function */
+            val pageState = rememberPagerState()
+            it.arguments?.getString("url")
+                ?.let { url ->
+                    SliderView(
+                        state = pageState, url = url, viewModel = SavedPhotoViewModel(
+                            LocalContext.current.applicationContext
+                                    as Application
+                        )
+                    )
+                }
+        }
+    }
 }
