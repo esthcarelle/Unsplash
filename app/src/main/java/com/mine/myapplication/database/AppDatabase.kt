@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.database
 
 import android.content.Context
 import androidx.room.Database
