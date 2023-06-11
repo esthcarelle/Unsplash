@@ -1,4 +1,4 @@
-package com.mine.myapplication
+package com.mine.myapplication.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
