@@ -82,15 +82,15 @@ fun ShowImageDetails(
                 rotationZ.value = 0f
             },
             onSaveClick = {
-                val photoEntity = PhotoEntity(url = url)
+                photoEntity.value.url = url
 
-                photoEntity.imageState = imageState.value
-                photoEntity.offSetX = offSetX.value
-                photoEntity.offSetY = offSetY.value
-                photoEntity.scale = scale.value
-                photoEntity.rotation = rotationZ.value
+                photoEntity.value.imageState = imageState.value
+                photoEntity.value.offSetX = offSetX.value
+                photoEntity.value.offSetY = offSetY.value
+                photoEntity.value.scale = scale.value
+                photoEntity.value.rotation = rotationZ.value
 
-                viewModel.saveImage(photoEntity)
+                viewModel.saveImage(photoEntity.value)
 
                 Toast.makeText(context, "Successfully Saved", Toast.LENGTH_LONG).show()
                 onSaveClick.invoke()
