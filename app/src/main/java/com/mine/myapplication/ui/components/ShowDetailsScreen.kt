@@ -55,6 +55,7 @@ fun ShowImageDetails(
     val offSetY = remember {
         mutableStateOf(0f)
     }
+    val photoEntity = remember{ mutableStateOf(PhotoEntity()) }
     val offSetX = remember {
         mutableStateOf(0f)
     }
@@ -63,21 +64,21 @@ fun ShowImageDetails(
 
     Scaffold(topBar = {
         MyTopAppBar(onBackClick = onBackClick, onBlurClick = {
-            imageState.value = BLURRED
+            photoEntity.value.imageState = BLURRED
             clickCount.value = it
         },
-            onZoomClick = { imageState.value = ZOOM },
-            onRevertClick = { imageState.value = ORIGINAL },
-            onDark = { imageState.value = DARK_FRAME },
-            onLight = { imageState.value = LIGHT_FRAME },
-            onGold = { imageState.value = GOLD_FRAME },
-            onBlack = { imageState.value = BLACK_FRAME },
+            onZoomClick = { photoEntity.value.imageState = ZOOM },
+            onRevertClick = { photoEntity.value.imageState = ORIGINAL },
+            onDark = { photoEntity.value.imageState = DARK_FRAME },
+            onLight = { photoEntity.value.imageState = LIGHT_FRAME },
+            onGold = { photoEntity.value.imageState = GOLD_FRAME },
+            onBlack = { photoEntity.value.imageState = BLACK_FRAME },
             onLandScape = {
-                imageState.value = LANDSCAPE
+                photoEntity.value.imageState = LANDSCAPE
                 rotationZ.value = 90f
             },
             onPortrait = {
-                imageState.value = PORTRAIT
+                photoEntity.value.imageState = PORTRAIT
                 rotationZ.value = 0f
             },
             onSaveClick = {

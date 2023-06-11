@@ -59,6 +59,9 @@ fun CustomImage(
         .data(url)
         .build()
 
+    val blurRatio by remember {
+        mutableStateOf(blurRatio)
+    }
     val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
 
     var modifier: Modifier = modifier
@@ -90,12 +93,12 @@ fun CustomImage(
             shape = RoundedCornerShape(6.dp)
         ) {
             if (photoEntity.imageState == BLURRED || photoEntity.imageState == BLACK_FRAME || photoEntity.imageState == GOLD_FRAME || photoEntity.imageState == DARK_FRAME || photoEntity.imageState == LIGHT_FRAME) {
-                LaunchedEffect(photoEntity.url) {
+                LaunchedEffect(blurRatio) {
                     withContext(Dispatchers.IO) {
                         val drawable =
                             uriToBitmap(context, photoEntity.url)
 
-                        var blurredBitmap = FrameUtil.blurImageUtil(context,bitmap = drawable, blurRadio = 10f)
+                        var blurredBitmap = FrameUtil.blurImageUtil(context,bitmap = drawable, blurRadio = blurRatio)
 
                         var frameBitmap : Bitmap = BitmapFactory.decodeResource(
                             context.resources,
