@@ -9,7 +9,6 @@ import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 import com.mine.myapplication.R
 
-
 class FrameUtil {
     companion object {
 

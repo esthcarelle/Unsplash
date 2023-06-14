@@ -55,30 +55,41 @@ fun ShowImageDetails(
     val offSetY = remember {
         mutableStateOf(0f)
     }
-    val photoEntity = remember{ mutableStateOf(PhotoEntity()) }
+    val photoEntity = remember { mutableStateOf(PhotoEntity(url = url)) }
     val offSetX = remember {
         mutableStateOf(0f)
     }
     val scale = remember { mutableStateOf(1f) }
     val rotationZ = remember { mutableStateOf(0f) }
 
-    Scaffold(topBar = {
+    Scaffold(topBar = {            photoEntity.value.isBlurred = true
+
         MyTopAppBar(onBackClick = onBackClick, onBlurClick = {
-            photoEntity.value.imageState = BLURRED
+            imageState.value = BLURRED
             clickCount.value = it
         },
-            onZoomClick = { photoEntity.value.imageState = ZOOM },
-            onRevertClick = { photoEntity.value.imageState = ORIGINAL },
-            onDark = { photoEntity.value.imageState = DARK_FRAME },
-            onLight = { photoEntity.value.imageState = LIGHT_FRAME },
-            onGold = { photoEntity.value.imageState = GOLD_FRAME },
-            onBlack = { photoEntity.value.imageState = BLACK_FRAME },
+            onZoomClick = { imageState.value = ZOOM },
+            onRevertClick = { imageState.value = ORIGINAL },
+            onDark = {
+                imageState.value = DARK_FRAME
+                photoEntity.value.isFramed = true
+                photoEntity.value.imageState = imageState.value
+            },
+            onLight = { imageState.value = LIGHT_FRAME
+                photoEntity.value.isFramed = true
+                photoEntity.value.imageState = imageState.value },
+            onGold = { imageState.value = GOLD_FRAME
+                photoEntity.value.isFramed = true
+                photoEntity.value.imageState = imageState.value },
+            onBlack = { imageState.value = BLACK_FRAME
+                photoEntity.value.isFramed = true
+                photoEntity.value.imageState = imageState.value },
             onLandScape = {
-                photoEntity.value.imageState = LANDSCAPE
+                imageState.value = LANDSCAPE
                 rotationZ.value = 90f
             },
             onPortrait = {
-                photoEntity.value.imageState = PORTRAIT
+                imageState.value = PORTRAIT
                 rotationZ.value = 0f
             },
             onSaveClick = {
@@ -98,9 +109,7 @@ fun ShowImageDetails(
         )
     }, content = {
 
-        val request = ImageRequest.Builder(LocalContext.current)
-            .data(url)
-            .build()
+        photoEntity.value.imageState = imageState.value
 
         when (imageState.value) {
             ORIGINAL, LANDSCAPE, PORTRAIT -> {
@@ -110,7 +119,7 @@ fun ShowImageDetails(
                 CustomImage(
                     modifier = modifier,
                     url = url,
-                    photoEntity = PhotoEntity(),
+                    photoEntity = photoEntity.value,
                     isEditable = true,
                     imagePainter = painterResource(id = R.drawable.ic_launcher_background),
                     onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
@@ -138,7 +147,7 @@ fun ShowImageDetails(
                     CustomImage(
                         modifier = modifier,
                         url = url,
-                        photoEntity = PhotoEntity(),
+                        photoEntity = photoEntity.value,
                         isEditable = true,
                         blurRatio = clickCount.value,
                         imagePainter = painterResource(id = R.drawable.ic_launcher_background),
@@ -155,7 +164,7 @@ fun ShowImageDetails(
                 CustomImage(
                     modifier = Modifier,
                     url = url,
-                    photoEntity = PhotoEntity(),
+                    photoEntity = photoEntity.value,
                     isEditable = true,
                     imagePainter = painterResource(id = R.drawable.ic_launcher_background),
                     onZoom = { zoomOffSetX, zoomOffSetY, zoomScale ->
@@ -169,7 +178,7 @@ fun ShowImageDetails(
                 CustomImage(
                     modifier = Modifier,
                     url = url,
-                    photoEntity = PhotoEntity(),
+                    photoEntity = photoEntity.value,
                     isEditable = true,
                     alpha = 1f,
                     imagePainter = painterResource(id = FrameUtil.painterToFrame(imageState.value)),
@@ -199,6 +208,7 @@ suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
         bitmap, 100, 100, true
     )
 }
+
 @Composable
 fun BlurImage(
     bitmap: Bitmap,

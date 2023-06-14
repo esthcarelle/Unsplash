@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.calculatePan
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -98,14 +99,23 @@ fun CustomImage(
                         val drawable =
                             uriToBitmap(context, photoEntity.url)
 
-                        var blurredBitmap = FrameUtil.blurImageUtil(context,bitmap = drawable, blurRadio = blurRatio)
+                        if(photoEntity.isBlurred) {
+                            var blurredBitmap = FrameUtil.blurImageUtil(
+                                context,
+                                bitmap = drawable,
+                                blurRadio = blurRatio
+                            )
+                            bitmapState.value = blurredBitmap
+                        }
 
-                        var frameBitmap : Bitmap = BitmapFactory.decodeResource(
-                            context.resources,
-                            FrameUtil.painterToFrame(photoEntity.imageState)
-                        )
+                        if(photoEntity.isFramed) {
+                            var frameBitmap: Bitmap = BitmapFactory.decodeResource(
+                                context.resources,
+                                FrameUtil.painterToFrame(photoEntity.imageState)
+                            )
+                            bitmapState.value = frameBitmap
+                        }
 
-                        bitmapState.value = blurredBitmap
 
                     }
                 }
@@ -115,7 +125,7 @@ fun CustomImage(
                         bitmap = it,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = modifier
+                        modifier = modifier.fillMaxSize()
                     )
                 }
             } else
