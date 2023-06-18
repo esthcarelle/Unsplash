@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -38,15 +38,15 @@ import com.mine.myapplication.viewModel.SavedPhotoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.mine.myapplication.R
-import com.mine.myapplication.components.Constants.BLACK_FRAME
-import com.mine.myapplication.components.Constants.BLURRED
-import com.mine.myapplication.components.Constants.DARK_FRAME
-import com.mine.myapplication.components.Constants.GOLD_FRAME
-import com.mine.myapplication.components.Constants.LANDSCAPE
-import com.mine.myapplication.components.Constants.LIGHT_FRAME
-import com.mine.myapplication.components.Constants.ORIGINAL
-import com.mine.myapplication.components.Constants.PORTRAIT
-import com.mine.myapplication.components.Constants.ZOOM
+import com.mine.myapplication.ui.components.Constants.BLACK_FRAME
+import com.mine.myapplication.ui.components.Constants.BLURRED
+import com.mine.myapplication.ui.components.Constants.DARK_FRAME
+import com.mine.myapplication.ui.components.Constants.GOLD_FRAME
+import com.mine.myapplication.ui.components.Constants.LANDSCAPE
+import com.mine.myapplication.ui.components.Constants.LIGHT_FRAME
+import com.mine.myapplication.ui.components.Constants.ORIGINAL
+import com.mine.myapplication.ui.components.Constants.PORTRAIT
+import com.mine.myapplication.ui.components.Constants.ZOOM
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

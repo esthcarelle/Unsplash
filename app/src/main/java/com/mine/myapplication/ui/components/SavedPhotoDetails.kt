@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 import android.graphics.Bitmap
 import android.os.Build
@@ -21,15 +21,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.mine.myapplication.R
-import com.mine.myapplication.components.Constants.BLACK_FRAME
-import com.mine.myapplication.components.Constants.BLURRED
-import com.mine.myapplication.components.Constants.DARK_FRAME
-import com.mine.myapplication.components.Constants.GOLD_FRAME
-import com.mine.myapplication.components.Constants.LANDSCAPE
-import com.mine.myapplication.components.Constants.LIGHT_FRAME
-import com.mine.myapplication.components.Constants.ORIGINAL
-import com.mine.myapplication.components.Constants.PORTRAIT
-import com.mine.myapplication.components.Constants.ZOOM
+import com.mine.myapplication.ui.components.Constants.BLACK_FRAME
+import com.mine.myapplication.ui.components.Constants.BLURRED
+import com.mine.myapplication.ui.components.Constants.DARK_FRAME
+import com.mine.myapplication.ui.components.Constants.GOLD_FRAME
+import com.mine.myapplication.ui.components.Constants.LANDSCAPE
+import com.mine.myapplication.ui.components.Constants.LIGHT_FRAME
+import com.mine.myapplication.ui.components.Constants.ORIGINAL
+import com.mine.myapplication.ui.components.Constants.PORTRAIT
+import com.mine.myapplication.ui.components.Constants.ZOOM
 import com.mine.myapplication.model.PhotoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

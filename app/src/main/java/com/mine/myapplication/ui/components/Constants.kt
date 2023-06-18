@@ -1,4 +1,4 @@
-package com.mine.myapplication.components
+package com.mine.myapplication.ui.components
 
 object Constants {
     const val BLACK_FRAME = "Black Frame"
